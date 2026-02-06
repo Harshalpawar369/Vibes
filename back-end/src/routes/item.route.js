@@ -8,6 +8,9 @@ const upload = multer({
 })
 
 const router = express.Router();
+
+router.get('/', itemController.getItems)
+
  
 router.post('/', authitemMiddleware.authitemMiddleware, upload.single("image"), itemController.createItem)
 

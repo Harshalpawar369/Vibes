@@ -5,25 +5,93 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import view from "../../assets/icons/view.png";
 import hide from "../../assets/icons/hide.png";
+import axiosuserapi from "../../api/axiosuserapi";    
+import { useNavigate } from "react-router-dom";
+import UserLogin from "./UserLogin";  
 
 
-const UserRegister = () => {
+const UserRegister = ({ onAuthSuccess }) => {
   const videoRef = useRef(null);
   const containerform = useRef(null);
+  
 
   const [show, setShow] = useState(0);
   const [hidepassword, setHidepassword] = useState(false);
 
+  const [formData, setFormData] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    contactNo: "",
+  });
   
+ const navigate = useNavigate();
 
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const response = await axiosuserapi.post("/registerUser", formData, { withCredentials: true });
+    console.log("Ignition Success:", response.data);
+
+    if (onAuthSuccess) {
+      onAuthSuccess(response.data?.user || null);
+    }
+
+    
+    gsap.to(".pop", { 
+      y: -500, 
+      opacity: 0, 
+      rotate: 15, 
+      scale: 0, 
+      duration: 0.8, 
+      ease: "power1.inOut" 
+    });
+
+    if (videoRef.current) {
+      videoRef.current.play();
+      videoRef.current.muted = false; 
+    }
+    
+  } catch (error) {
+
+    const errorMessage = error.response?.data?.message || "Something went wrong";
+    
+    alert(errorMessage); 
+
+    console.error("Engine Stall:", errorMessage);
+   
+    
+    
+    gsap.to(".pop", { 
+      x: 10, 
+      scale:0,
+      duration: 0.1, 
+      ease: "power1.inOut", 
+      yoyo: true, 
+      repeat: 5 
+    });
+
   }
+};
+
+const handleVideoEnd = () => {
+  navigate("/"); 
+};
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ 
+    ...prev, 
+    [name]: value
+  }));
+};
+
   useGSAP(() => {
     const video = videoRef.current;
 
     gsap.delayedCall(5, () => {
+      
       if (video) {
         video.pause();
         video.currentTime = 5;
@@ -54,6 +122,7 @@ const UserRegister = () => {
           muted
           src={formvideoBackground}
           ref={videoRef}
+          onEnded={handleVideoEnd}
           className="bg-video w-full h-screen fixed top-0 left-0 z-0 overflow-hidden"
           width={100}
           height={100}
@@ -80,7 +149,9 @@ const UserRegister = () => {
 
                 <input
                   type="text"
-                  name="username"
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleChange}
                   placeholder="USERNAME"
                   required
                   className="w-full bg-black/40 border-2 border-black p-4 rounded-xl font-bold placeholder:text-zinc-600 outline-none focus:bg-white focus:text-black transition-all"
@@ -89,6 +160,8 @@ const UserRegister = () => {
                 <input
                   type="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="EMAIL"
                   required
                   className="w-full bg-black/40 border-2 border-black p-4 rounded-xl font-bold placeholder:text-zinc-600 outline-none focus:bg-white focus:text-black transition-all"
@@ -98,6 +171,8 @@ const UserRegister = () => {
                   <input
                     type={hidepassword ? "text" : "password"}
                     name="password"
+                    value={formData.password}
+                    onChange={handleChange}
                     placeholder="PASSWORD"
                     required
                     className="w-full bg-black/40 border-2 border-black p-4 pr-12 rounded-xl font-bold placeholder:text-zinc-600 outline-none focus:bg-white focus:text-black transition-all"
@@ -113,6 +188,8 @@ const UserRegister = () => {
                 <input
                   type="number"
                   name="contactNo"
+                  value={formData.contactNo}
+                  onChange={handleChange}
                   placeholder="CONTACT NO"
                   required
                   className="w-full bg-black/40 border-2 border-black p-4 rounded-xl font-bold placeholder:text-zinc-600 outline-none focus:bg-white focus:text-black transition-all"
@@ -124,6 +201,19 @@ const UserRegister = () => {
                 >
                   Ignition →
                 </button>
+                
+                  <div>
+                    <p className="text-black font-bold text-center">
+                      Already a member?{" "}
+                      <span
+                        className="text-blue-600 cursor-pointer"
+                        onClick={() => navigate("/userLogin")}
+                      >
+                        Login
+                      </span>
+                    </p>
+                  </div>
+
               </form>
             </div>
           </div>

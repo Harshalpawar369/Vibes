@@ -3,7 +3,6 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import yellowLady from "../../assets/images/yellowLady.jpg";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer.jsx";
-import eyes from "../../assets/images/eyes.png"
 import eye from "../../assets/images/eye.png"
 import "../../utils/stylesheet/eye.css"
 import { Link, useNavigate } from "react-router-dom";
@@ -112,11 +111,11 @@ function Home() {
       </div>
 
       <div className="w-full flex flex-col md:flex-row items-center justify-between bg-amber-400 p-8 gap-10 overflow-hidden">
-        <div className="w-full md:w-1/2 space-y-4">
+        <div className="w-full md:w-1/2 space-y-4 font-[poppins]">
           <h2 className="text-5xl font-black italic uppercase tracking-tighter text-zinc-900">
             Hi, We are the Vibe
           </h2>
-          <p className="text-lg font-bold leading-tight text-zinc-800">
+          <p className="text-lg font-bold leading-tight text-zinc-800 text-justify">
             Welcome to the <span className="text-white italic">Vibe</span> of
             Gen-Z fashion. We blend Luminous style with the raw Rhythm of the
             underground, creating a Fusion of accessories that hit different.
@@ -131,6 +130,7 @@ function Home() {
             streets.
           </p>
           <motion.button
+            onClick={() => navigate("/about")}
             whileHover={{
               scale: 1.05,
               boxShadow: "0px 0px 0px 0px black",

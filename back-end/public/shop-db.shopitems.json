@@ -1,0 +1,130 @@
+[{
+  "_id": {
+    "$oid": "696c6e89a9bd484a9b326474"
+  },
+  "itemCategory": "Male",
+  "brandName": "Gucci",
+  "price": 7000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768713863577-black_fEqhqg2fg.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c6eb0a9bd484a9b326477"
+  },
+  "itemCategory": "Male",
+  "brandName": "Zara",
+  "price": 9000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768713903401-nigga_tP4VUKYtv.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c6ee0a9bd484a9b32647a"
+  },
+  "itemCategory": "Women",
+  "brandName": "Zara",
+  "price": 900,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768713950914-oldlady_SdrNYip33.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c6f0fa9bd484a9b32647d"
+  },
+  "itemCategory": "Women",
+  "brandName": "Urban",
+  "price": 1300,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768713998164-funny_BG_RIt8eD.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c6f2da9bd484a9b326480"
+  },
+  "itemCategory": "Women",
+  "brandName": "Gucci",
+  "price": 5500,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768714027692-girl_uNZdVFL0V.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c73dca9bd484a9b32648c"
+  },
+  "itemCategory": "accessories",
+  "brandName": "Snikkers",
+  "price": 7000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768715226634-girlkick_l-SDq3_Jw.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c743ea9bd484a9b32648f"
+  },
+  "itemCategory": "accessories",
+  "brandName": "Snikkers",
+  "price": 7000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768715324678-kick_1wcgoQldu.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696c7482a9bd484a9b326492"
+  },
+  "itemCategory": "accessories",
+  "brandName": "Tition",
+  "price": 5000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768715392796-watch1_pIpwcVrZ5.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69709ca9f594f44a8557daa9"
+  },
+  "itemCategory": "accessories",
+  "brandName": "Lucci",
+  "price": 3240,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768987816432-orange-removebg-preview_OuDR7Uyo-.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69709cc8f594f44a8557daac"
+  },
+  "itemCategory": "accessories",
+  "brandName": "Gucci",
+  "price": 7800,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768987847534-blackbag-removebg-preview_wNqN1c85H1.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69709ce4f594f44a8557daaf"
+  },
+  "itemCategory": "Male",
+  "brandName": "Zara",
+  "price": 10000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768987875359-racist-removebg-preview_2CSNgiwvf.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69709d32f594f44a8557dab2"
+  },
+  "itemCategory": "Women",
+  "brandName": "Prada",
+  "price": 150000,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768987953004-funky-removebg-preview_ODqixzbRK.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69709d74f594f44a8557dab5"
+  },
+  "itemCategory": "Women",
+  "brandName": "Louis Vuitton",
+  "price": 4800,
+  "image": "https://ik.imagekit.io/zawzssuyis/1768988018409-niggro-removebg-preview_orU3LaxEJ.jpg",
+  "__v": 0
+}]

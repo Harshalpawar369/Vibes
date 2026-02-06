@@ -28,8 +28,7 @@ async function registerUser(req, res) {
        
         const token = jwt.sign({ email }, process.env.JWT_SECRET);
 
-       
-        res.cookie("token", token);
+        res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax' });
         return res.status(201).json({
             message: "user registred successfully",
             user: {
@@ -67,7 +66,7 @@ if(!isPasswordValid){
 
 const token = jwt.sign({ email: checkUserexist.email }, process.env.JWT_SECRET);
 
-res.cookie("token", token);
+res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax' });
 
 res.status(200).json({
     message: "user logged-in succssefully",
@@ -81,7 +80,7 @@ res.status(200).json({
 }
 
 function logoutUSer(req,res){
-    res.clearCookie("token");
+    res.clearCookie("usertoken");
     res.status(200).json({
         message: "logged out successfully"
     })
@@ -158,11 +157,30 @@ function adminlogout(req,res){
         message: "loggout successefully"
     })
 }
+async function isLoggedIn(req, res) {
+    const token = req.cookies.usertoken;
+    if (!token) {
+        return res.status(200).json({ loggedIn: false });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await userModel.findOne({ email: decoded.email }).select("email userName contactNo");
+        if (!user) {
+            return res.status(200).json({ loggedIn: false });
+        }
+        return res.status(200).json({ loggedIn: true, user });
+    } catch (error) {
+        return res.status(200).json({ loggedIn: false });
+    }   
+}
+
 module.exports = { 
     registerUser,
     loginUser,
     logoutUSer,
     shopAdminRegister,
     shopAdminLogin,
-    adminlogout
+    adminlogout,
+    isLoggedIn
  };

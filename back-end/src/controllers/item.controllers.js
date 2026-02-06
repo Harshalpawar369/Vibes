@@ -30,4 +30,14 @@ async function createItem(req,res){
     }
 }
 
-module.exports = { createItem };
+async function getItems(req, res) {
+    try {
+        const items = await shopitemModel.find();   
+        res.status(200).json(items);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching items", error: error.message });
+    }
+}
+
+
+module.exports = { createItem, getItems };
