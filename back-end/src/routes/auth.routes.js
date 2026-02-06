@@ -14,4 +14,5 @@ router.post("/admin/login", authController.shopAdminLogin);
 
 router.post("/admin/logout", authController.adminlogout)
 router.get('/loggedIn', authController.isLoggedIn);
+
 module.exports = router;

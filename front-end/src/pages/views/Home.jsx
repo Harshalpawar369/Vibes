@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import yellowLady from "../../assets/images/yellowLady.jpg";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer.jsx";
-import eye from "../../assets/images/eye.png"
-import "../../utils/stylesheet/eye.css"
+import eye from "../../assets/images/eye.png";
+import "../../utils/stylesheet/eye.css";
 import { Link, useNavigate } from "react-router-dom";
 
-
 function Home() {
- const navigate = useNavigate();
- 
+  const navigate = useNavigate();
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -18,9 +17,14 @@ function Home() {
   const pupilX = useSpring(mouseX, springConfig);
   const pupilY = useSpring(mouseY, springConfig);
 
-
-  const x = useTransform(pupilX, (val) => ((val / window.innerWidth) - 0.5) * -16);
-  const y = useTransform(pupilY, (val) => ((val / window.innerHeight) - 0.5) * -16);
+  const x = useTransform(
+    pupilX,
+    (val) => (val / window.innerWidth - 0.5) * -16,
+  );
+  const y = useTransform(
+    pupilY,
+    (val) => (val / window.innerHeight - 0.5) * -16,
+  );
 
   const handleMouseMove = (e) => {
     mouseX.set(e.clientX);
@@ -28,8 +32,6 @@ function Home() {
   };
 
   const { items, status } = useSelector((state) => state.products);
-
-
 
   const accessories =
     items && items.length > 0
@@ -41,7 +43,6 @@ function Home() {
           )
           .slice(0, 4)
       : [];
-
 
   if (status === "loading") return <p>Vibe is Loading...</p>;
 
@@ -80,14 +81,16 @@ function Home() {
           </div>
           <div className="w-1/2 font-bold font-[poppins] text-[1.3vmax] m-3">
             <motion.button
-            onClick={() => navigate("/shop")}
+              onClick={() => navigate("/shop")}
               whileHover={{
-                scale: 1.05,
-                boxShadow: "0px 0px 0px 0px black",
+                x: 4,
+                y: 4,
+                boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
               }}
               whileTap={{
                 scale: 0.9,
               }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
               type="button"
               className="bg-emerald-400  border-4 border-black p-2 uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
@@ -95,18 +98,21 @@ function Home() {
             </motion.button>
           </div>
         </div>
-        <div 
-        onMouseMove={handleMouseMove}
-        className="w-full md:w-1/2 relative flex justify-center items-center  z-0 ">
+        <div
+          onMouseMove={handleMouseMove}
+          className="w-full md:w-1/2 relative flex justify-center items-center  z-0 "
+        >
           <img src={eye} alt="" className="w-full h-auto object-cover z-0 " />
-           <div className=" flex items-center justify-between  absolute top-42 left-90 rotate-165 z-10 gap-12">
-             <motion.div 
-             style={{ x, y }}
-             className="relative bg-zinc-900 rounded-full w-full h-full p-2"></motion.div>
-             <motion.div 
-             style={{ x, y }}
-             className="bg-zinc-900 rounded-full w-full h-full relative p-2 "></motion.div>
-           </div>
+          <div className=" flex items-center justify-between  absolute top-42 left-90 rotate-165 z-10 gap-12">
+            <motion.div
+              style={{ x, y }}
+              className="relative bg-zinc-900 rounded-full w-full h-full p-2"
+            ></motion.div>
+            <motion.div
+              style={{ x, y }}
+              className="bg-zinc-900 rounded-full w-full h-full relative p-2 "
+            ></motion.div>
+          </div>
         </div>
       </div>
 
@@ -132,12 +138,14 @@ function Home() {
           <motion.button
             onClick={() => navigate("/about")}
             whileHover={{
-              scale: 1.05,
-              boxShadow: "0px 0px 0px 0px black",
+              x: 4,
+              y: 4,
+              boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
             }}
             whileTap={{
               scale: 0.9,
             }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
             type="button"
             className="bg-emerald-400 font-bold font-[poppins] border-4 p-2 border-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-[1.3vmax]"
           >
@@ -161,14 +169,20 @@ function Home() {
       <div className="bg-white w-full py-10">
         <div className="w-full  bg-white text-zinc-950 -mt-10 mb-10 rounded-lg">
           <div className="py-10 border-t-2 border-b-2 border-white text-center flex whitespace-nowrap overflow-hidden -mb-5 pt-5 ">
-            <motion.h1 
-            initial={{x: 0}} animate = {{x: "-100%"}} transition={{ease:"linear",repeat:Infinity,duration:10}}
-            className="font-bold text-[10vmax] leading-none">
+            <motion.h1
+              initial={{ x: 0 }}
+              animate={{ x: "-100%" }}
+              transition={{ ease: "linear", repeat: Infinity, duration: 10 }}
+              className="font-bold text-[10vmax] leading-none"
+            >
               Match Your Vibe!
             </motion.h1>
-             <motion.h1 
-            initial={{x: 0}} animate = {{x: "-100%"}} transition={{ease:"linear",repeat:Infinity,duration:10}}
-            className="font-bold text-[10vmax] leading-none">
+            <motion.h1
+              initial={{ x: 0 }}
+              animate={{ x: "-100%" }}
+              transition={{ ease: "linear", repeat: Infinity, duration: 10 }}
+              className="font-bold text-[10vmax] leading-none"
+            >
               Match Your Vibe!
             </motion.h1>
           </div>
@@ -193,16 +207,18 @@ function Home() {
                   <h3 className="font-black text-xl uppercase italic">
                     {item.brandName}
                   </h3>
-                  <p className="text-3xl font-black ">
-                    ${item.price}
-                  </p>
+                  <p className="text-3xl font-black ">${item.price}</p>
                   <motion.button
-                  onClick={() => navigate("/shop")}
+                    onClick={() => navigate("/shop")}
                     whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0px 0px 0px 0px black",
+                      x: 4,
+                      y: 4,
+                      boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
                     }}
-                    whileTap={{ scale: 0.9 }}
+                    whileTap={{
+                      scale: 0.9,
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     className="w-full bg-emerald-400  border-4 border-black  uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]  py-2 text-md font-extrabold"
                   >
                     Buy

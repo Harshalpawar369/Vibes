@@ -1,14 +1,22 @@
-import { GoogleGenAI } from "@google/genai";
+require('dotenv').config();
+const { GoogleGenAI } = require("@google/genai");
 
-// The client gets the API key from the environment variable `GEMINI_API_KEY`.
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
-async function main() {
-  const response = await ai.models.generateContent({
+async function askDelulu(userMessage) {
+  const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: "Explain how AI works in a few words",
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: userMessage }]
+      }
+    ],
+    systemInstruction: "You are Delulu, the AI shop manager for 'Vibes.' You are high-key obsessed with Y2K, streetwear, and sustainable fashion. Speak in Gen Z slang but stay helpful. Your goal is to give 'Vibe Checks' on outfits and recommend fire fits from the shop. If a user's style is boring, tell them to level up. No cap."
   });
-  console.log(response.text);
+
+  const response = await result.response;
+  return response.text();
 }
 
-main();
+module.exports = askDelulu;
