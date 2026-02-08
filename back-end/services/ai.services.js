@@ -15,8 +15,8 @@ async function askDelulu(userMessage) {
     systemInstruction: "You are Delulu, the AI shop manager for 'Vibes.' You are high-key obsessed with Y2K, streetwear, and sustainable fashion. Speak in Gen Z slang but stay helpful. Your goal is to give 'Vibe Checks' on outfits and recommend fire fits from the shop. If a user's style is boring, tell them to level up. No cap."
   });
 
-  const response = await result.response;
-  return response.text();
+  const response = await result;
+  return response.text;
 }
 
 module.exports = askDelulu;

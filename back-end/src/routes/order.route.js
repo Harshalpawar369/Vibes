@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/my', authRoleMiddleware, requireUser, getMyOrders);
 router.get('/admin', authRoleMiddleware, requireAdmin, getAllOrders);
 
-router.post('/', authRoleMiddleware, requireUser, createOrder);
+router.post('/', authRoleMiddleware,requireUser, createOrder);
 router.patch('/:id/deliver', authRoleMiddleware, requireAdmin, markDelivered);
 router.delete('/:id', authRoleMiddleware, deleteOrder);
 

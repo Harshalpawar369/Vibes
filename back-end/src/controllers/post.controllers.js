@@ -12,7 +12,7 @@ async function sendMessage(req,res){
         const newMessage = await messageModel.create({
             userMessage,
             deluluResponse,
-            user: req.user._id
+           user: req.user._id
         });
         res.status(201).json({
             message: "Message sent successfully",

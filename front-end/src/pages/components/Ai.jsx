@@ -1,10 +1,27 @@
 import React from 'react'
 import { useState } from 'react'
+import axiosAiapi from "../../api/axiosAiapi.jsx"
 
 const Ai = () => {
  const [see, setSee] = useState(false)  
  const [message, setMessage] = useState("")
- 
+
+ const handleSubmit = async (e) => {
+    e.preventDefault()
+    try{
+        const result = await axiosAiapi.post( "/askDelulu", message, {
+        withCredentials: true,
+      })
+        console.log(result.data)
+    }catch(err){
+        console.log(err)    
+    }
+ }
+
+ function handleChange(e) {
+  setMessage(e.target.value)
+ }
+
   return (
     <div className='w-full bg-white text-zinc-900 text-md'>
        {see ? (
@@ -15,10 +32,10 @@ const Ai = () => {
             <button onClick={() => setSee(false)}>✕</button>
           </div>
 
-          <form  className='p-4 border-t-2 border-zinc-100 flex gap-2'>
+          <form  className='p-4 border-t-2 border-zinc-100 flex gap-2' onSubmit={() =>{ handleSubmit}}>
             <input 
               type="text" 
-              
+              onChange={() => handleChange}
               
               placeholder='Ask for a vibe check...' 
               className='flex-1 p-2 outline-none border-2 border-zinc-900 rounded-lg' 
