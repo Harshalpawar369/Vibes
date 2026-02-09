@@ -1,48 +1,47 @@
 @keyframes wiggle {
-      0%, 100% { transform: rotate(-1deg); }
-      50% { transform: rotate(1deg); }
-    }
-    .funky-shadow {
-      box-shadow: 10px 10px 0px 0px #000;
-      transition: all 0.2s ease;
-    }
-    .funky-shadow:hover {
-      box-shadow: 15px 15px 0px 0px #FFFFFF; 
-      transform: translate(-2px, -2px);
-    }
-    .disco-mode {
-      filter: hue-rotate(90deg) contrast(1.2);
-    }
+  0%,
+  100% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(1deg);
+  }
+}
+.funky-shadow {
+  box-shadow: 10px 10px 0px 0px #000;
+  transition: all 0.2s ease;
+}
+.funky-shadow:hover {
+  box-shadow: 15px 15px 0px 0px #34d399;
+  transform: translate(-2px, -2px);
+}
+.disco-mode {
+  filter: hue-rotate(90deg) contrast(1.2);
+}
 .bg-video {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
-  pointer-events: none; 
+  object-fit: cover;
+  pointer-events: none;
 }
 .content {
   opacity: 0;
   position: relative;
-  z-index: 10; 
+  z-index: 10;
   color: white;
   text-align: center;
   padding-top: 0%;
 }
 
-/* formstyle.css */
-/* formstyle.css */
 .shard-item {
   will-change: transform;
   background-color: white;
-  /* Prevent 'pixel gaps' where video might show through */
-  width: 102%; 
+
+  width: 102%;
   margin-left: -1px;
   border-right: 1px solid white;
 }
-/* Ensure the video container handles the transition properly
 
-.video-container {
-  perspective: 1000px;
-} */
 .video-container {
   perspective: 1000px;
 }

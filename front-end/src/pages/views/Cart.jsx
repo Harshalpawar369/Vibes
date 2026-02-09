@@ -65,7 +65,7 @@ function Cart({ isLoggedIn, user }) {
         <h1 className="text-3xl font-black mb-6">Your Cart</h1>
 
         {!isLoggedIn && (
-          <div className="border-4 border-black p-4 mb-6 bg-yellow-200 font-semibold">
+          <div className="border-4 border-black p-4 mb-6 bg-yellow-200 font-semibold rounded-2xl">
             Please log in first to order and see your order history.
           </div>
         )}
@@ -73,7 +73,7 @@ function Cart({ isLoggedIn, user }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cartItems.length === 0 ? (
-              <div className="border-4 border-black p-6 text-center font-semibold">
+              <div className="border-4 border-black p-6 text-center font-semibold rounded-2xl">
                 Your cart is empty.
               </div>
             ) : (
@@ -85,12 +85,12 @@ function Cart({ isLoggedIn, user }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: -200 }}
                     transition={{ duration: 0.35, ease: "easeInOut" }}
-                    className="border-4 border-black p-4 flex flex-col md:flex-row gap-4"
+                    className="border-4 border-black p-4 flex flex-col md:flex-row gap-4 rounded-2xl"
                   >
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full md:w-40 h-40 object-cover border-2 border-black"
+                      className="w-full md:w-40 h-40 object-cover border-2 border-black rounded-2xl"
                     />
                     <div className="flex-1">
                       <h2 className="text-xl font-black">{item.name}</h2>
@@ -115,7 +115,7 @@ function Cart({ isLoggedIn, user }) {
                         damping: 17,
                       }}
                       onClick={() => dispatch(removeFromCart(item._id))}
-                      className="px-4 py-2 bg-red-300 border-4 border-black font-bold uppercase"
+                      className="px-4 py-2 bg-red-300 border-4 border-black font-bold uppercase rounded-2xl"
                     >
                       Remove
                     </motion.button>
@@ -125,7 +125,7 @@ function Cart({ isLoggedIn, user }) {
             )}
           </div>
 
-          <div className="border-4 border-black p-6 h-fit sticky top-[20vh]">
+          <div className="border-4 border-black p-6 h-fit sticky top-[20vh] rounded-2xl">
             <h2 className="text-2xl font-black mb-4">Summary</h2>
             <p className="font-semibold mb-2">Items: {totalQuantity}</p>
             <p className="font-semibold mb-4">Total: ${totalAmount}</p>
@@ -152,7 +152,7 @@ function Cart({ isLoggedIn, user }) {
         <div className="mt-12 mb-5">
           <h2 className="text-2xl font-black mb-4">Order History</h2>
           {!isLoggedIn ? (
-            <div className="border-4 border-black p-6 text-center font-semibold">
+            <div className="border-4 border-black p-6 text-center font-semibold rounded-2xl">
               Please log in to see your orders.
             </div>
           ) : status === "loading" ? (
@@ -160,13 +160,13 @@ function Cart({ isLoggedIn, user }) {
               Loading your orders...
             </div>
           ) : orders.length === 0 ? (
-            <div className="border-4 border-black p-6 text-center font-semibold">
+            <div className="border-4 border-black p-6 text-center font-semibold rounded-2xl">
               No orders yet.
             </div>
           ) : (
             <div className="space-y-4">
               {orders.map((order) => (
-                <div key={order._id} className="border-4 border-black p-4">
+                <div key={order._id} className="border-4 border-black p-4 rounded-2xl">
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
                     <div>
                       <p className="font-bold">Order ID: {order._id}</p>
@@ -199,7 +199,7 @@ function Cart({ isLoggedIn, user }) {
                   </div>
                   <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
                     {order.items?.map((line) => (
-                      <div key={line._id} className="border-2 border-black p-2">
+                      <div key={line._id} className="border-2 border-black p-2 rounded-2xl">
                         <p className="font-semibold">
                           {line.items?.brandName ?? line.items?.name ?? "Item"}
                         </p>
@@ -227,7 +227,7 @@ function Cart({ isLoggedIn, user }) {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 10 }}
               transition={{ duration: 0.2 }}
-              className="bg-white border-4 border-black p-6 w-full max-w-lg "
+              className="bg-white border-4 border-black p-6 w-full max-w-lg rounded-2xl"
             >
               <h2 className="text-2xl font-black mb-4">Order Details</h2>
               <form onSubmit={handleSubmitOrder} className="space-y-4">

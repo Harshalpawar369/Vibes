@@ -173,7 +173,7 @@ function Home() {
               initial={{ x: 0 }}
               animate={{ x: "-100%" }}
               transition={{ ease: "linear", repeat: Infinity, duration: 10 }}
-              className="font-bold text-[10vmax] leading-none"
+              className="font-bold text-[8vmax] leading-none"
             >
               Match Your Vibe!
             </motion.h1>
@@ -181,7 +181,7 @@ function Home() {
               initial={{ x: 0 }}
               animate={{ x: "-100%" }}
               transition={{ ease: "linear", repeat: Infinity, duration: 10 }}
-              className="font-bold text-[10vmax] leading-none"
+              className="font-bold text-[8vmax] leading-none"
             >
               Match Your Vibe!
             </motion.h1>

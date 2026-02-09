@@ -44,7 +44,7 @@ function Shop({ isLoggedIn, user }) {
               placeholder="Search your vibe..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border-4 border-black px-4 py-2 w-1/2 font-bold"
+              className="border-4 border-black px-4 py-2 w-1/2 font-bold rounded-md font-[poppins]"
             />
           </div>
           <div className=" flex flex-wrap gap-4 mb-12 ">
