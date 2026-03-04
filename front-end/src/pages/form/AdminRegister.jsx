@@ -2,8 +2,10 @@ import { useState } from 'react'
 import view from "../../assets/icons/view.png"
 import hide from "../../assets/icons/hide.png"
 import axiosuserapi from "../../api/axiosuserapi";
+import { useNavigate, Navigate } from 'react-router-dom';
 
 function AdminRegister() {
+  const navigate = useNavigate();
  const [hidepass, setHidepass] = useState(false);
 
  const [formData, setFormData] = useState({
@@ -26,6 +28,8 @@ const handleSubmit = async (e) =>{
   
   try {
      const response = await axiosuserapi.post("/admin/register", formData, { withCredentials: true });
+     console.log("Admin Registration Successful:", response);
+    navigate("/vibe/admin/login")
    
   } catch (error) {
     const errorMessage = error.response?.data?.message || "Something went wrong";

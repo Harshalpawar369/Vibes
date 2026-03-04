@@ -19,18 +19,13 @@ const Footer = () => {
             <h2 className="text-6xl font-black mb-8 font-['Syne'] uppercase">VIBE CHECK.</h2>
             <p className="text-2xl text-[#ccff00] font-bold mb-8 italic">DON'T MISS THE DROP.</p>
             <div className="flex border-4 border-[#ccff00] rounded-full overflow-hidden max-w-md bg-white/5">
-              <input 
-                type="email" 
-                placeholder="YOUR EMAIL..." 
-                className="bg-transparent px-6 py-4 flex-1 focus:outline-none font-bold placeholder-gray-500 text-white" 
-              />
-              <button className="bg-[#ccff00] text-black px-8 py-4 font-black hover:bg-white transition-colors">SEND IT</button>
+             
             </div>
           </div>
           <div>
             <h5 className="font-black text-xl mb-6 text-[#ff007a] uppercase">Guides</h5>
             <ul className="space-y-4 font-bold text-gray-400">
-              {['Shipping?', 'Returns?', 'Who are we?', 'Careers?'].map(link => (
+              {['Shipping?', 'Who are we', 'Careers'].map(link => (
                 <li key={link}><a href="#" className="hover:text-white transition uppercase">{link}</a></li>
               ))}
             </ul>
@@ -52,7 +47,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-20 pt-8 border-t-2 border-white/20 text-center font-bold text-gray-500 italic uppercase tracking-widest">
-          Keep it real. © 2024 VIBE CHECK. Made for the grid.
+          Keep it real. © 2026 VIBE CHECK. Made for the grid.
         </div>
       </footer>
         </>

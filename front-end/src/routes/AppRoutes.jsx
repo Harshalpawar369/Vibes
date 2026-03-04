@@ -10,6 +10,8 @@ import About from '../pages/views/About'
 import Cart from '../pages/views/Cart'
 import AppLayout from './routeLayouts/AppLayout'
 import AuthLayout from './routeLayouts/AuthLayout'
+import AdminLogin from '../pages/form/AdminLogin'
+import AdminPanel from "../pages/views/AdminPanel.jsx"
 
 const AppRoutes = ({ isLoggedIn, user, onAuthSuccess }) => {
   return (
@@ -25,8 +27,9 @@ const AppRoutes = ({ isLoggedIn, user, onAuthSuccess }) => {
             path='/vibe/register'
             element={<UserRegister onAuthSuccess={onAuthSuccess} />}
           />
-          <Route path='/vibe/admin/login' element={<h1>Admin Login</h1>} />
+          <Route path='/vibe/admin/login' element={<AdminLogin/>} />
           <Route path='/vibe/admin/register' element={<AdminRegister />} />
+          <Route path="/vibe/adminpanel"  element= {<AdminPanel/>}/>
         </Route>
 
         <Route element={<AppLayout isLoggedIn={isLoggedIn} user={user} />}>

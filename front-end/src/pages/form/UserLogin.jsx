@@ -59,7 +59,7 @@ const UserLogin = ({ onAuthSuccess }) => {
       const response = await axiosuserapi.post("/login", formData, {
         withCredentials: true,
       });
-      console.log("Ignition Success:", response.data);
+   
 
       if (onAuthSuccess) {
         onAuthSuccess(response.data?.user || null);

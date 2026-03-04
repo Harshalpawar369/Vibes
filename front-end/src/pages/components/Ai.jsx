@@ -1,37 +1,61 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axiosAiapi from "../../api/axiosAiapi.jsx";
-import {motion} from "framer-motion";
-import ReactMarkdown from 'react-markdown';
+import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 
 const Ai = () => {
   const [see, setSee] = useState(false);
   const [message, setMessage] = useState("");
-  const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const scrollRef = useRef(null);
+  const [chat, setChat] = useState([]);
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat, loading]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!message.trim()) return;
+
+    const userMessage = message.trim();
+    setChat((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), role: "user", content: userMessage },
+    ]);
+    setMessage("");
 
     try {
       setLoading(true);
       const result = await axiosAiapi.post(
         "/askDelulu",
         {
-          userMessage: message,
+          userMessage,
         },
         {
           withCredentials: true,
         },
       );
-      setResponse(result.data.data.deluluResponse);
+      const aiResponse = result.data.data.deluluResponse;
+      setChat((prev) => [
+        ...prev,
+        { id: crypto.randomUUID(), role: "assistant", content: aiResponse },
+      ]);
       console.log("Delulu responce is: ", result.data);
-      setLoading(false);
-      setMessage("");
     } catch (err) {
       console.log(err);
+      setChat((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content: "Sorry, I couldn't respond. Please try again.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,8 +74,42 @@ const Ai = () => {
             <button onClick={() => setSee(false)}>✕</button>
           </div>
 
+          <div className="flex-1 overflow-y-auto px-4 pb-2 space-y-3">
+            {chat.length === 0 && (
+              <div className="text-sm text-zinc-500">
+                Ask for a vibe check to start the chat.
+              </div>
+            )}
+            {chat.map((item) => (
+              <div
+                key={item.id}
+                className={`w-full flex ${
+                  item.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <div
+                  className={`max-w-[85%]  px-3 py-2 rounded-md text-md font-bold leading-relaxed border-2 border-black ${
+                    item.role === "user"
+                      ? "bg-emerald-400"
+                      : "bg-zinc-100"
+                  }`}
+                >
+                  <ReactMarkdown>{item.content}</ReactMarkdown>
+                </div>
+              </div>
+            ))}
+            {loading && (
+              <div className="w-full flex justify-start">
+                <div className="max-w-[85%] rounded-lg px-3 py-2 text-sm leading-relaxed border-2 border-black bg-zinc-200">
+                  Thinking...
+                </div>
+              </div>
+            )}
+            <div ref={scrollRef} />
+          </div>
+
           <form
-            className="p-4 border-t-2 border-zinc-100 flex-col flex-wrap "
+            className="p-4 border-t-2 border-zinc-100 flex-col flex-wrap"
             onSubmit={handleSubmit}
           >
             <div className="flex flex-wrap gap-2">
@@ -65,28 +123,19 @@ const Ai = () => {
               <motion.button
                 type="submit"
                 whileHover={{
-              x: 4,
-              y: 4,
-              boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
-            }}
-            whileTap={{
-              scale: 0.9,
-            }}
+                  x: 4,
+                  y: 4,
+                  boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
+                }}
+                whileTap={{
+                  scale: 0.9,
+                }}
                 disabled={loading}
-                className="bg-emerald-400 font-bold font-[poppins] border-4 p-1 border-black  shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] "
+                className="bg-emerald-400 font-bold font-[poppins] border-3 px-1 py-0 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
               >
                 {loading ? "Thinking..." : "Send"}
               </motion.button>
             </div>
-            {response && (
-              <div className="w-full mt-8 p-2 bg-zinc-200 rounded-lg">
-                <div className="font-bold mb-2 font-[poppins]">Delulu's Response:</div>
-                <div className="text-sm text-zinc-700">
-                  
-                  <ReactMarkdown>{response}</ReactMarkdown>
-                  </div>
-              </div>
-            )}
           </form>
         </div>
       ) : (

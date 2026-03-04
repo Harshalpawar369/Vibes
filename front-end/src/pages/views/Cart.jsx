@@ -115,7 +115,7 @@ function Cart({ isLoggedIn, user }) {
                         damping: 17,
                       }}
                       onClick={() => dispatch(removeFromCart(item._id))}
-                      className="px-4 py-2 bg-red-300 border-4 border-black font-bold uppercase rounded-2xl"
+                      className="px-3.5  bg-emerald-400 border-4 border-black font-bold uppercase rounded-2xl"
                     >
                       Remove
                     </motion.button>
@@ -192,7 +192,7 @@ function Cart({ isLoggedIn, user }) {
                         damping: 17,
                       }}
                       onClick={() => dispatch(deleteOrder(order._id))}
-                      className="px-4 py-2 bg-white border-4 border-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      className="px-4 py-2 bg-emerald-400 border-4 border-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     >
                       Cancel Order
                     </motion.button>

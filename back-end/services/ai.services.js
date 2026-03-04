@@ -16,7 +16,7 @@ async function askDelulu(userMessage) {
   });
 
   const response = await result;
-  return response.text;
+  return response.text();
 }
 
 module.exports = askDelulu;

@@ -1,38 +1,14 @@
-import React from "react";
-import Footer from "../components/Footer";
-import cool from "../../assets/images/cool.jpg";
-import kiara from "../../assets/images/kiara.jpg";
+import React from 'react'
+import Footer from "../components/Footer.jsx" 
+import cool from "../../assets/images/cool.jpg"
 
 function About() {
   return (
     <>
-      <div className="w-full min-h-screen bg-white text-zinc-950 font-[poppins]">
-        <div className="w-full min-h-screen bg-amber-400 flex flex-col md:flex-row justify-around items-center  px-10">
-          <div className="md:w-1/2 w-full bg-emerald-400 rounded-lg shadow-lg flex justify-center items-center p-8">
-            <p className="absolute left-[5rem] top-[34rem]  text-white font-extrabold text-[3vmax]">
-              BOLDNESS IN FASHION
-            </p>
-            <img
-              src={kiara}
-              alt="Kiara"
-              className="max-w-full h-auto rounded-lg ml-20 py-16 "
-            />
-          </div>
-
-          <div className="md:w-1/2 w-full flex justify-center items-center relative ">
-            <img
-              src={cool}
-              alt="Cool"
-              className="w-full md:w-64 rounded-lg funky-shadow "
-            />
-            <p className="absolute right-[-0.5rem] text-white font-extrabold rotate-90 text-[8vmax]">
-              GEN Z
-            </p>
-          </div>
-        </div>
-
-        <div className="py-5 px-10 w-full">
-          <p className="font-semibold text-xl flex w-1/2 leading-tight text-justify">
+    <div className='w-full h-screen bg-white font-[poppins]  bg-white'>
+      <div className='flex flex-wrap items-center justify-around w-full'>
+        <div className='pt-[15vh] text-[7vw] font-extrabold ml-[2.5vw] m-5 w-1/2'>
+          <p className="font-semibold text-xl flex  leading-tight text-justify text-zinc-950">
             Vibes is the ultimate Gen Z fashion playground—a high-key,
             community-first platform where Y2K nostalgia meets streetwear edge.
             Moving beyond basic fast fashion it champions circular commerce
@@ -46,10 +22,20 @@ function About() {
             and eco-conscious sellers who actually get it.
           </p>
         </div>
+          <div className='pt-[15vh] pr-[2.5vw] '>
+            <div>
+              <img src= {cool} alt="404" className='rounded-2xl funky-shadow' width={350} />
+            </div>
+            
+          </div>
+
       </div>
-      <Footer />
-    </>
-  );
+
+        
+    </div>
+    <Footer />
+     </>
+  )
 }
 
-export default About;
+export default About

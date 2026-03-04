@@ -4,9 +4,10 @@ import loupe from "../../assets/icons/loupe.png";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import "../../utils/stylesheet/font.css";
-import { User, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import '../../utils/stylesheet/responsive.css';
 
 function Navbar({ isLoggedIn, user }) {
   const navigate = useNavigate();
@@ -18,11 +19,11 @@ function Navbar({ isLoggedIn, user }) {
       initial={{ y: -50, opacity: 0 }}
       transition={{ duration: 0.5 }} 
 
-      className="w-full fixed z-[100] flex items-center justify-between flex-wrap px-3 py-1.5 bg-white shadow-md font-[poppins] text-zinc-950">
-        <div className="ml-5 text-3xl font-bold font-[poppins] font-extrabold">
+      className=" navsec w-full fixed z-[100] flex items-center justify-between flex-wrap px-3 py-1.5 bg-white shadow-md font-[poppins] text-zinc-950">
+        <div className="ml-5 text-3xl font-bold font-[poppins] font-extrabold logo">
           Vibes
         </div>
-        <div className=" space-x-8">
+        <div className="nav-mob space-x-8 navbar-links">
           {["Home", "About", "Shop"].map((item, index) => (
             <motion.button
               onClick={() => {

@@ -12,7 +12,7 @@
   transition: all 0.2s ease;
 }
 .funky-shadow:hover {
-  box-shadow: 15px 15px 0px 0px #34d399;
+  box-shadow: 15px 15px 0px 0px #d5e734;
   transform: translate(-2px, -2px);
 }
 .disco-mode {
