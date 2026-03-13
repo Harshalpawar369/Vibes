@@ -1,16 +1,23 @@
-# React + Vite
+# Tech Used
+Back-end Framework = express
+Front-end Framework = React + Vite
+Animation = Framer motion + Gsap
+State Management = ReactRedux toolkit
+AI Integration = gemini 2.0
+Styling = css, tailwind css
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Fluid User Interface: Complex, high-performance UI animations powered by a combination of Framer Motion for component lifecycles and GSAP for advanced sequencing and scroll-triggered effects.
+Intelligent Shopping: AI-powered integrations to elevate the standard e-commerce flow.
+Robust State Management: Centralized, predictable state handling using Redux Toolkit for seamless cart, user session, and product data management.
+Secure Authentication: Integrated user login and registration flow.
 
-## React Compiler
+# Getting Started
+# ##Prerequisites
+Make sure you have Node.js and npm (or yarn/pnpm) installed on your machine.
+**Install Dependencies**
+npm install
+ 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
