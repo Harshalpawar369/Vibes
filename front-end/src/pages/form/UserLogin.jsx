@@ -55,8 +55,13 @@ const UserLogin = ({ onAuthSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const payload = {
+      ...formData,
+      email: formData.email.trim().toLowerCase(),
+    };
+
     try {
-      const response = await axiosuserapi.post("/login", formData, {
+      const response = await axiosuserapi.post("/login", payload, {
         withCredentials: true,
       });
    

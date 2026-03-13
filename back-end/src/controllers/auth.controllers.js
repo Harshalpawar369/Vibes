@@ -6,9 +6,16 @@ const shopAdminModel = require("../../models/shopAdmin.js")
 async function registerUser(req, res) {
     try {
         const { userName, email, password, contactNo } = req.body;
+        const normalizedEmail = String(email || "").trim().toLowerCase();
+        const escapedEmail = normalizedEmail.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const emailMatcher = new RegExp(`^${escapedEmail}$`, "i");
+
+        if (!normalizedEmail) {
+            return res.status(400).json({ message: "Email is required" });
+        }
 
        
-        const isuserAlreadyExists = await userModel.findOne({ email });
+        const isuserAlreadyExists = await userModel.findOne({ email: emailMatcher });
         if (isuserAlreadyExists) {
             return res.status(400).json({ message: "User already exist" });
         }
@@ -20,13 +27,13 @@ async function registerUser(req, res) {
         
         const createdUser = await userModel.create({
             userName,
-            email,
+            email: normalizedEmail,
             password: hashedPassword,
             contactNo,
         });
 
        
-        const token = jwt.sign({ email }, process.env.JWT_SECRET);
+        const token = jwt.sign({ email: normalizedEmail }, process.env.JWT_SECRET);
 
         res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax' });
         return res.status(201).json({
@@ -45,9 +52,18 @@ async function registerUser(req, res) {
 
 async function loginUser(req,res) {
     const {email,password} = req.body;
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+    const escapedEmail = normalizedEmail.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const emailMatcher = new RegExp(`^${escapedEmail}$`, "i");
+
+    if (!normalizedEmail || !password) {
+        return res.status(400).json({
+            message: "invalid email or password"
+        })
+    }
 
     const checkUserexist = await userModel.findOne({
-    email
+    email: emailMatcher
 })
 
 if(!checkUserexist){

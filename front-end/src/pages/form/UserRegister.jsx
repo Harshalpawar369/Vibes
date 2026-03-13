@@ -1,4 +1,4 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import formvideoBackground from "../../assets/video/formvideoBackground.mp4";
 import "../../utils/stylesheet/formstyle.css";
 import gsap from "gsap";
@@ -7,7 +7,6 @@ import view from "../../assets/icons/view.png";
 import hide from "../../assets/icons/hide.png";
 import axiosuserapi from "../../api/axiosuserapi";    
 import { useNavigate } from "react-router-dom";
-import UserLogin from "./UserLogin";  
 
 
 const UserRegister = ({ onAuthSuccess }) => {
@@ -207,7 +206,7 @@ const handleChange = (e) => {
                       Already a member?{" "}
                       <span
                         className="text-blue-600 cursor-pointer"
-                        onClick={() => navigate("/userLogin")}
+                        onClick={() => navigate("/vibe/login")}
                       >
                         Login
                       </span>

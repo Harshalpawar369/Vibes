@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,14 +8,17 @@ import {
   deleteOrder,
   fetchMyOrders,
 } from "../../redux/features/orderSlice.js";
+import UserContext from "../../context/UserContext";
 
-function Cart({ isLoggedIn, user }) {
+
+function Cart() {
   const dispatch = useDispatch();
   const { cartItems, totalAmount, totalQuantity } = useSelector(
     (state) => state.cart,
   );
   const { orders, status, createStatus } = useSelector((state) => state.orders);
 
+  const { user, isLoggedIn } = useContext(UserContext);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [address, setAddress] = useState("");
   const [phoneNO, setPhoneNO] = useState("");

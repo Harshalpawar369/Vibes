@@ -6,12 +6,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../utils/stylesheet/font.css";
 import { Menu } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import '../../utils/stylesheet/responsive.css';
+import UserContext from "../../context/UserContext";
 
-function Navbar({ isLoggedIn, user }) {
+function Navbar() {
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const { user, isLoggedIn } = useContext(UserContext);
   return (
     <>
       <motion.nav 

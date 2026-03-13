@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
+import { useContext } from 'react'
 
 import UserRegister from '../pages/form/UserRegister'
 import UserLogin from '../pages/form/UserLogin'
@@ -12,8 +13,11 @@ import AppLayout from './routeLayouts/AppLayout'
 import AuthLayout from './routeLayouts/AuthLayout'
 import AdminLogin from '../pages/form/AdminLogin'
 import AdminPanel from "../pages/views/AdminPanel.jsx"
+import UserContext from '../context/UserContext'
 
-const AppRoutes = ({ isLoggedIn, user, onAuthSuccess }) => {
+const AppRoutes = () => {
+  const { handleAuthSuccess } = useContext(UserContext)
+
   return (
     <Router>
       <Routes>
@@ -21,21 +25,21 @@ const AppRoutes = ({ isLoggedIn, user, onAuthSuccess }) => {
         <Route element={<AuthLayout />}>
           <Route
             path='/vibe/login'
-            element={<UserLogin onAuthSuccess={onAuthSuccess} />}
+            element={<UserLogin onAuthSuccess={handleAuthSuccess} />}
           />
           <Route
             path='/vibe/register'
-            element={<UserRegister onAuthSuccess={onAuthSuccess} />}
+            element={<UserRegister onAuthSuccess={handleAuthSuccess} />}
           />
           <Route path='/vibe/admin/login' element={<AdminLogin/>} />
           <Route path='/vibe/admin/register' element={<AdminRegister />} />
           <Route path="/vibe/adminpanel"  element= {<AdminPanel/>}/>
         </Route>
 
-        <Route element={<AppLayout isLoggedIn={isLoggedIn} user={user} />}>
-          <Route path='/' element={<Home isLoggedIn={isLoggedIn} user={user}/>} />
-          <Route path='/shop' element={<Shop isLoggedIn={isLoggedIn} user={user} />} />
-          <Route path='/cart' element={<Cart isLoggedIn={isLoggedIn} user={user}/>} />
+        <Route element={<AppLayout  />}>
+          <Route path='/' element={<Home />} />
+          <Route path='/shop' element={<Shop />} />
+          <Route path='/cart' element={<Cart/>} />
           <Route path='/about' element={<About />} />
         </Route>
 

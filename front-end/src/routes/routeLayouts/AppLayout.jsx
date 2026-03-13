@@ -3,10 +3,10 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../../pages/components/Navbar.jsx'
 import Ai from '../../pages/components/Ai.jsx'
 
-const AppLayout = ({ isLoggedIn, user }) => {
+const AppLayout = () => {
   return (
     <>
-      <Navbar isLoggedIn={isLoggedIn} user={user} />
+      <Navbar />
       
       <Outlet />
       <Ai/>

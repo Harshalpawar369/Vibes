@@ -2,11 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { addToCart } from "../../redux/features/cartSlice";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
-function Shop({ isLoggedIn, user }) {
+function Shop() {
   const navigate = useNavigate();
   const { items, status } = useSelector((state) => state.products);
   const { cartItems } = useSelector((state) => state.cart);
@@ -14,6 +15,7 @@ function Shop({ isLoggedIn, user }) {
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const { user, isLoggedIn } = useContext(UserContext);
 
   if (status === "idle" || status === "loading") {
     return <p className="text-center mt-20">Vibe is Loading...</p>;
