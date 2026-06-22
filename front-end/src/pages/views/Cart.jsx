@@ -3,13 +3,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, clearCart } from "../../redux/features/cartSlice.js";
-import {
-  createOrder,
-  deleteOrder,
-  fetchMyOrders,
-} from "../../redux/features/orderSlice.js";
-import UserContext from "../../context/UserContext";
+import { deleteOrder, fetchMyOrders } from "../../redux/features/orderSlice.js";
 
+import {
+  createPaymentOrder,
+  verifyPayment,
+} from "../../redux/features/paymentSlice.js";
+import UserContext from "../../context/UserContext";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ function Cart() {
     (state) => state.cart,
   );
   const { orders, status, createStatus } = useSelector((state) => state.orders);
+  const { createOrderStatus } = useSelector((state) => state.payment);
 
   const { user, isLoggedIn } = useContext(UserContext);
   const [showOrderForm, setShowOrderForm] = useState(false);
@@ -32,12 +33,38 @@ function Cart() {
 
   const canPlaceOrder = useMemo(() => cartItems.length > 0, [cartItems.length]);
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+      script.onload = () => {
+        resolve(true);
+      };
+
+      script.onerror = () => {
+        resolve(false);
+      };
+
+      document.body.appendChild(script);
+    });
+  };
+
   const handleSubmitOrder = async (event) => {
     event.preventDefault();
+
     setFormError("");
 
     if (!address.trim() || !phoneNO.trim()) {
       setFormError("Please fill address and phone number.");
+      return;
+    }
+
+    const razorpayLoaded = await loadRazorpayScript();
+
+    if (!razorpayLoaded) {
+      setFormError("Unable to load Razorpay.");
       return;
     }
 
@@ -48,18 +75,71 @@ function Cart() {
       })),
       address: address.trim(),
       phoneNO: Number(phoneNO),
-      tottalPrice: totalAmount,
+      totalPrice: {
+        amount: totalAmount,
+        currency: "INR",
+      },
     };
 
-    const result = await dispatch(createOrder(payload));
-    if (createOrder.fulfilled.match(result)) {
-      dispatch(clearCart());
-      setShowOrderForm(false);
-      setAddress("");
-      setPhoneNO("");
-    } else {
-      setFormError("Unable to place order.");
+    const paymentResult = await dispatch(createPaymentOrder(totalAmount));
+
+    if (!createPaymentOrder.fulfilled.match(paymentResult)) {
+      setFormError("Unable to initiate payment.");
+      return;
     }
+
+    const razorpayOrder = paymentResult.payload;
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+      amount: razorpayOrder.amount,
+
+      currency: razorpayOrder.currency,
+
+      order_id: razorpayOrder.id,
+
+      name: "Vibes",
+
+      description: "Order Payment",
+
+      handler: async function (response) {
+        const verifyResult = await dispatch(
+          verifyPayment({
+            ...response,
+            orderData: payload,
+          }),
+        );
+
+        if (verifyPayment.fulfilled.match(verifyResult)) {
+          dispatch(clearCart());
+
+          dispatch(fetchMyOrders());
+
+          setAddress("");
+          setPhoneNO("");
+
+          setShowOrderForm(false);
+
+          alert("Payment Successful");
+        } else {
+          setFormError("Payment verification failed.");
+        }
+      },
+
+      prefill: {
+        name: user?.name || "",
+        contact: phoneNO,
+      },
+
+      theme: {
+        color: "#10b981",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+
+    rzp.open();
   };
 
   return (
@@ -169,12 +249,15 @@ function Cart() {
           ) : (
             <div className="space-y-4">
               {orders.map((order) => (
-                <div key={order._id} className="border-4 border-black p-4 rounded-2xl">
+                <div
+                  key={order._id}
+                  className="border-4 border-black p-4 rounded-2xl"
+                >
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
                     <div>
                       <p className="font-bold">Order ID: {order._id}</p>
                       <p className="font-semibold">
-                        Total: ${order.totalPrice}
+                        Total: ₹{order.totalPrice?.amount}
                       </p>
                       <p className="font-semibold">
                         Delivered: {order.isDelivered ? "Yes" : "No"}
@@ -202,7 +285,10 @@ function Cart() {
                   </div>
                   <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
                     {order.items?.map((line) => (
-                      <div key={line._id} className="border-2 border-black p-2 rounded-2xl">
+                      <div
+                        key={line._id}
+                        className="border-2 border-black p-2 rounded-2xl"
+                      >
                         <p className="font-semibold">
                           {line.items?.brandName ?? line.items?.name ?? "Item"}
                         </p>
@@ -267,10 +353,12 @@ function Cart() {
                     }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     type="submit"
-                    disabled={createStatus === "loading"}
+                    disabled={createOrderStatus === "loading"}
                     className="flex-1 bg-emerald-400 border-4 border-black font-bold py-2 uppercase disabled:opacity-60 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   >
-                    {createStatus === "loading" ? "Placing..." : "Place Order"}
+                    {createOrderStatus === "loading"
+                      ? "Processing..."
+                      : `Pay ₹${totalAmount}`}
                   </motion.button>
                   <motion.button
                     whileHover={{

@@ -6,9 +6,10 @@ async function createOrder(req, res) {
       return res.status(401).json({ message: "Unauthorized: missing user session" });
     }
 
-    const { quantity, address, tottalPrice, totalPrice, item, items, phoneNO } = req.body;
-    const resolvedPhoneNo = phoneNO ?? req.user?.contactNo;
-    const resolvedTotalPrice = tottalPrice ?? totalPrice;
+    const { quantity, address,  totalPrice, item, items, phoneNO } = req.body;
+    const { amount, currency } = totalPrice || {}
+    const resolvedPhoneNo = phoneNO;
+    const resolvedTotalPrice =  totalPrice;
 
     const resolvedItems = Array.isArray(items)
       ? items

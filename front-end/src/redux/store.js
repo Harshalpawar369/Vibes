@@ -3,6 +3,7 @@ import productReducer from "./features/productSlice.js";
 import searchReducer from "./features/searchSlice.js";
 import orderReducer from "./features/orderSlice.js";
 import cartReducer from "./features/cartSlice.js";
+import paymentReducer from "./features/paymentSlice.js";
 
 const CART_STORAGE_KEY = "vibes_cart";
 
@@ -22,7 +23,7 @@ const saveCartState = (cartState) => {
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartState));
   } catch {
-    // Ignore write errors (e.g., storage full, private mode)
+   
   }
 };
 
@@ -31,6 +32,7 @@ export const store = configureStore({
     products: productReducer,
     search: searchReducer,
     orders: orderReducer,
+     payment: paymentReducer,
     cart: cartReducer,
   },
   preloadedState: {

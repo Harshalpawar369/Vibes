@@ -5,7 +5,7 @@ import axiosuserapi from '../api/axiosuserapi.jsx'
 function UserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   const checkAuth = async () => {
     try{

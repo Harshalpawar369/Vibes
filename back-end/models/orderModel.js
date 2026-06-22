@@ -35,8 +35,16 @@ const orderSchema = new mongoose.Schema({
     },
     
     totalPrice: {
+       amount:{
         type: Number,
-        required: true
+        required: true,
+        min: [0, 'Total price cannot be negative.']
+       },
+       currency: {
+        type: String,
+        required: true,
+        default: 'INR'
+       }
     },
    
     isDelivered: {

@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth.routes.js')
 const itemRoutes = require('./routes/item.route.js');
 const orderRoutes = require('./routes/order.route.js');
 const postRoutes = require('./routes/post.route.js');
+const paymentRoutes = require('./routes/payment.route.js');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/auth/vibe', authRoutes);
 app.use('/api/item/vibe', itemRoutes);
 app.use('/api/vibe/order', orderRoutes);
 app.use('/api/vibe/post', postRoutes)
+app.use('/api/vibe/payment', paymentRoutes);
 
 app.get("/", function(req,res){
     res.send("this is the page")
