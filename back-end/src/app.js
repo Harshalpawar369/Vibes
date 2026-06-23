@@ -1,7 +1,14 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const rateLimiter = require('express-rate-limit');
 
 const cors = require('cors');
+
+const limiter = rateLimiter({
+  windowsMs: 3 * 60 * 1000,
+  max: 100,
+  message: "Too many requests from this IP, please try again after a minute",
+})
 
 const authRoutes = require('./routes/auth.routes.js')
 const itemRoutes = require('./routes/item.route.js');
@@ -26,6 +33,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser())
+app.use(limiter)
 
 app.use('/api/auth/vibe', authRoutes);
 app.use('/api/item/vibe', itemRoutes);
