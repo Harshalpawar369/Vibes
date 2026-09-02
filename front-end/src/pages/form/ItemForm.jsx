@@ -30,7 +30,7 @@ function ItemForm() {
     e.preventDefault();
 
     if (!formData.image) {
-      console.log("Please select an image before submitting.");
+
       return;
     }
 
@@ -45,7 +45,7 @@ function ItemForm() {
         withCredentials: true,
       });
       if (response.status === 201) {
-        console.log("item added successeful", response.data);
+
         alert("item added successfully");
         setFormData({
           brandName: "",
@@ -57,7 +57,7 @@ function ItemForm() {
         e.target.reset();
       }
     } catch (err) {
-      console.log("Item create failed:", err.response?.data || err.message);
+      alert("Failed to add item. Please try again.");
     }
   };
 

@@ -5,7 +5,7 @@ const rateLimiter = require('express-rate-limit');
 const cors = require('cors');
 
 const limiter = rateLimiter({
-  windowsMs: 3 * 60 * 1000,
+  windowMs: 3 * 60 * 1000,
   max: 100,
   message: "Too many requests from this IP, please try again after a minute",
 })
@@ -19,6 +19,7 @@ const paymentRoutes = require('./routes/payment.route.js');
 const app = express();
 
 const allowedOrigins = [
+  'http://localhost:4173',
   'http://localhost:5173', 
   'http://localhost:5174', 
   'http://localhost:5175',

@@ -1,13 +1,7 @@
-import React from 'react';
-import { 
-  User, 
-  Plus, 
-  Instagram, 
-  Twitter, 
-  Menu,
-  ArrowRight,
-  Zap
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { GrInstagram } from "react-icons/gr";
+import { FaUserCircle } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { motion } from 'framer-motion';
 
 const Footer = () => {
@@ -23,22 +17,35 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h5 className="font-black text-xl mb-6 text-[#ff007a] uppercase">Guides</h5>
-            <ul className="space-y-4 font-bold text-gray-400">
-              {['Shipping?', 'Who are we', 'Careers'].map(link => (
-                <li key={link}><a href="#" className="hover:text-white transition uppercase">{link}</a></li>
-              ))}
-            </ul>
-          </div>
+  <h5 className="font-black text-xl mb-6 text-[#ff007a] uppercase">Guides</h5>
+  <ul className="space-y-4 font-bold text-gray-400">
+    {[
+      { label: 'Shipping?', path: '/shipping' },
+      { label: 'Who are we', path: '/about' },
+      { label: 'Careers', path: '/careers' }
+    ].map((link) => (
+      <li key={link.label}>
+        <Link 
+          to={link.path} 
+          className="hover:text-white transition uppercase"
+        >
+          {link.label}
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div>
           <div>
             <h5 className="font-black text-xl mb-6 text-[#8b5cf6] uppercase">Socials</h5>
             <div className="flex gap-6">
-              {[Instagram, Twitter, User].map((Icon, i) => (
+              {[GrInstagram, FaGithub, FaUserCircle].map((Icon, i) => (
                 <motion.a 
                   key={i}
                   whileHover={{ y: -5, color: "#ccff00" }}
                   href="#" 
+                  aria-label={`Visit our ${Icon.name.replace('Fa', '').replace('Gr', '')} page`}
                   className="text-3xl transition-colors"
+
                 >
                   <Icon size={32} />
                 </motion.a>

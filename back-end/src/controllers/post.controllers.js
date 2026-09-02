@@ -19,7 +19,7 @@ async function sendMessage(req, res) {
       data: newMessage,
     });
   } catch (error) {
-    console.error("sendMessage error:", error);
+   
     res.status(500).json({ message: "Internal Server Error" });
   }
 }

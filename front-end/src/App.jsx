@@ -1,10 +1,9 @@
-import React from 'react'
+
 import AppRoutes from './routes/AppRoutes'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchAllItems } from './redux/features/productSlice.js';
-import axiosuserapi from "../src/api/axiosuserapi.jsx";
-import { useState } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import UserProvider from './context/UserProvider.jsx';
 
 const App = () => {
@@ -30,6 +29,7 @@ const App = () => {
 
   
   return (
+    <HelmetProvider>
     <UserProvider>
     <div className='w-full h-screen bg-zinc-900 text-white '>
 
@@ -38,6 +38,7 @@ const App = () => {
     />
     </div>
     </UserProvider>
+    </HelmetProvider>
   )
 }
 

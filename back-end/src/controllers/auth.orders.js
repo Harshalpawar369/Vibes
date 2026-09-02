@@ -1,4 +1,5 @@
-const orderModel = require("../../models/orderModel");
+const orderModel = require("../../models/orderModel.js");
+const shopitemModel = require("../../models/shopItem.js"); // Required for secure price calculation
 
 async function createOrder(req, res) {
   try {
@@ -6,39 +7,51 @@ async function createOrder(req, res) {
       return res.status(401).json({ message: "Unauthorized: missing user session" });
     }
 
-    const { quantity, address,  totalPrice, item, items, phoneNO } = req.body;
-    const { amount, currency } = totalPrice || {}
-    const resolvedPhoneNo = phoneNO;
-    const resolvedTotalPrice =  totalPrice;
+
+    const { quantity, address, item, items, phoneNO } = req.body;
+
 
     const resolvedItems = Array.isArray(items)
       ? items
       : [
           {
-            items: item,
-            quantity: quantity,
+            item: item, 
+            quantity: quantity || 1,
           },
         ];
 
-    if (!address || !resolvedPhoneNo || !resolvedTotalPrice) {
+    if (!address || !phoneNO || resolvedItems.length === 0) {
       return res.status(400).json({ message: "Missing required fields" });
+    }
+
+  
+    let calculatedTotal = 0;
+    for (let current of resolvedItems) {
+        const dbItem = await shopitemModel.findById(current.item);
+        if (!dbItem) {
+            return res.status(404).json({ message: `Item not found in database.` });
+        }
+        calculatedTotal += (dbItem.price * current.quantity);
     }
 
     const newOrder = await orderModel.create({
       user: req.user._id,
       items: resolvedItems,
       address: address,
-      phoneNO: resolvedPhoneNo,
-      totalPrice: resolvedTotalPrice,
+      phoneNO: phoneNO,
+      totalPrice: { 
+          amount: calculatedTotal, 
+          currency: 'INR' 
+      },
     });
 
     res.status(201).json({
-      message: "Order successfully",
+      message: "Order placed successfully",
       order: newOrder,
     });
 
   } catch (error) {
-    console.error("createOrder error:", error);
+    
     res.status(500).json({
       message: "Internal Server Error",
       error: error?.message || "Unknown error",
@@ -54,11 +67,12 @@ async function getMyOrders(req, res) {
 
     const orders = await orderModel
       .find({ user: req.user._id })
-      .populate("items.items")
+      .populate("items.item") 
       .exec();
+      
     res.status(200).json({ orders });
   } catch (error) {
-    console.error("getMyOrders error:", error);
+   
     res.status(500).json({
       message: "Internal Server Error",
       error: error?.message || "Unknown error",
@@ -68,10 +82,10 @@ async function getMyOrders(req, res) {
 
 async function getAllOrders(req, res) {
   try {
-    const orders = await orderModel.find().populate("items.items").exec();
+    const orders = await orderModel.find().populate("items.item").exec(); 
     res.status(200).json({ orders });
   } catch (error) {
-    console.error("getAllOrders error:", error);
+    
     res.status(500).json({
       message: "Internal Server Error",
       error: error?.message || "Unknown error",
@@ -83,6 +97,7 @@ async function markDelivered(req, res) {
   try {
     const { id } = req.params;
     const order = await orderModel.findById(id);
+    
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -93,7 +108,7 @@ async function markDelivered(req, res) {
 
     return res.status(200).json({ message: "Order delivered", order });
   } catch (error) {
-    console.error("markDelivered error:", error);
+    
     return res.status(500).json({
       message: "Internal Server Error",
       error: error?.message || "Unknown error",
@@ -105,6 +120,7 @@ async function deleteOrder(req, res) {
   try {
     const { id } = req.params;
     const order = await orderModel.findById(id);
+    
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -125,4 +141,3 @@ async function deleteOrder(req, res) {
 }
 
 module.exports = { createOrder, getMyOrders, getAllOrders, markDelivered, deleteOrder };
-

@@ -10,7 +10,7 @@ function UserProvider({ children }) {
   const checkAuth = async () => {
     try{
      const response = await axiosuserapi.get('/loggedIn', {withCredentials:true});
-      console.log("Auth response:", response.data);
+      
       if(response.data.loggedIn === true){
         setUser(response.data.user);
         setIsLoggedIn(true);
@@ -21,7 +21,7 @@ function UserProvider({ children }) {
       }
     } 
     catch(error){
-      console.log("Not logged in");
+   
       setUser(null);
       setIsLoggedIn(false);
     }

@@ -50,7 +50,8 @@ function AdminPanel() {
                       <p className="font-semibold">Phone: {order.phoneNO}</p>
                     </div>
                     <div className="text-left md:text-right">
-                      <p className="font-bold">Total: ${order.totalPrice}</p>
+                   
+<p className="font-bold">Total: ₹{order.totalPrice?.amount}</p>
                       <p className="font-semibold">
                         Delivered: {order.isDelivered ? "Yes" : "No"}
                       </p>
@@ -60,11 +61,11 @@ function AdminPanel() {
                   <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
                     {order.items?.map((line) => (
                       <div
-                        key={line._id || `${order._id}-${line.items?._id}`}
+                        key={line._id || `${order._id}-${line.item?._id}`}
                         className="border-2 border-zinc-900 rounded-xl p-2"
                       >
                         <p className="font-semibold">
-                          {line.items?.brandName ?? line.items?.name ?? "Item"}
+                          {line.item?.brandName ?? line.item?.name ?? "Item"}
                         </p>
                         <p className="font-semibold">Qty: {line.quantity}</p>
                       </div>

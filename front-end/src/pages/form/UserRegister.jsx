@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
-import formvideoBackground from "../../assets/video/formvideoBackground.mp4";
+import formvideoBackground from "/assets/video/formvideoBackground.mp4";
 import "../../utils/stylesheet/formstyle.css";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import view from "../../assets/icons/view.png";
-import hide from "../../assets/icons/hide.png";
+import view from "/assets/icons/view.png";
+import hide from "/assets/icons/hide.png";
 import axiosuserapi from "../../api/axiosuserapi";    
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const UserRegister = ({ onAuthSuccess }) => {
   try {
 
     const response = await axiosuserapi.post("/registerUser", formData, { withCredentials: true });
-    console.log("Ignition Success:", response.data);
+   
 
     if (onAuthSuccess) {
       onAuthSuccess(response.data?.user || null);
@@ -58,7 +58,7 @@ const UserRegister = ({ onAuthSuccess }) => {
     
     alert(errorMessage); 
 
-    console.error("Engine Stall:", errorMessage);
+ 
    
     
     

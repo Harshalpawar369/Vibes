@@ -1,4 +1,4 @@
-import React from "react";
+
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,6 +6,8 @@ import { useState, useContext } from "react";
 import { addToCart } from "../../redux/features/cartSlice";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
+import SEO from '../components/SEO.jsx';
+
 
 function Shop() {
   const navigate = useNavigate();
@@ -38,6 +40,11 @@ function Shop() {
 
   return (
     <>
+       <SEO 
+        title="Shop" 
+        description="Stop by our shop and explore a wide range of products that cater to your unique style and vibe. From trendy fashion pieces to must-have accessories, we have everything you need to express yourself. Shop now and elevate your vibe with our curated collection."
+        canonical="https://vibes-ecommerce-website.vercel.app/shop"
+      />
       {isLoggedIn && user ? (
         <div className="w-full h-screen overflow-x-hidden bg-white text-black">
           <div className="mt-[18vh] flex justify-center">
@@ -88,7 +95,8 @@ function Shop() {
                   <img
                     src={item.image}
                     alt={item.brandName}
-                    className="h-64 w-full object-cover mb-4"
+                    loading="lazy"
+                    className="h-64 w-full object-cover mb-4 background-yellow-300 "
                   />
                   <h3 className="font-black uppercase">{item.brandName}</h3>
                   <p className="text-xl font-bold">${item.price}</p>

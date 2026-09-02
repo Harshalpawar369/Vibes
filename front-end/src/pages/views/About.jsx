@@ -1,10 +1,17 @@
 import React from 'react'
 import Footer from "../components/Footer.jsx" 
-import cool from "../../assets/images/cool.jpg"
+import cool from "/assets/images/cool.webp"
+import SEO from '../components/SEO.jsx';
+
 
 function About() {
   return (
     <>
+    <SEO 
+        title="About Me" 
+        description="IT's a Story of fashion "
+        canonical="https://localhost:4173/about"
+      />
     <div className='w-full h-screen bg-white font-[poppins]  bg-white'>
       <div className='flex flex-wrap items-center justify-around w-full'>
         <div className='pt-[15vh] text-[7vw] font-extrabold ml-[2.5vw] m-5 w-1/2'>
@@ -24,7 +31,7 @@ function About() {
         </div>
           <div className='pt-[15vh] pr-[2.5vw] '>
             <div>
-              <img src= {cool} alt="404" className='rounded-2xl funky-shadow' width={350} />
+              <img src= {cool} alt="404" fetchPriority='high' className='rounded-2xl funky-shadow' width={350} />
             </div>
             
           </div>

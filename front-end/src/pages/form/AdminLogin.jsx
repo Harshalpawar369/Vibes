@@ -1,6 +1,6 @@
 import React from "react";
-import view from "../../assets/icons/view.png";
-import hide from "../../assets/icons/hide.png";
+import view from "/assets/icons/view.png";
+import hide from "/assets/icons/hide.png";
 import axiosuserapi from "../../api/axiosuserapi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,12 +29,13 @@ function AdminLogin() {
       });
       if (response.status === 200) {
        
-        console.log("Admin Login Successful:", response);
+       
          navigate("/vibe/adminpanel")
       }
       
     } catch (error) {
-      console.log("Admin Login Error:", error);
+      const errorMessage = error.response?.data?.message || "Something went wrong";
+      alert(errorMessage); 
     }
   };
 

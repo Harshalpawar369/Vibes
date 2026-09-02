@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-    
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },
-
     items: [{
-        items: {
+       
+        item: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'shopItem', 
             required: true
@@ -21,21 +20,18 @@ const orderSchema = new mongoose.Schema({
             default: 1
         }
     }],
-    
     address: {
         type: String,
         required: true,
         trim: true
     },
-    phoneNO:{
-        type: Number,
+    phoneNO: {
+        type: String,
         required: true,
         trim: true,
-      
     },
-    
     totalPrice: {
-       amount:{
+       amount: {
         type: Number,
         required: true,
         min: [0, 'Total price cannot be negative.']
@@ -46,24 +42,24 @@ const orderSchema = new mongoose.Schema({
         default: 'INR'
        }
     },
-   
     isDelivered: {
         type: Boolean,
         default: false
     },
-   
     deliveredAt: {
         type: Date
     }
 }, { 
-    
-    timestamps: true 
+    timestamps: true,
+   
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
-
 
 orderSchema.virtual('totalItemsCount').get(function() {
-    return this.items.reduce((total, item) => total + item.quantity, 0);
+    return this.items.reduce((total, current) => total + current.quantity, 0);
 });
+
 const orderModel = mongoose.model("order", orderSchema);
 
 module.exports = orderModel;

@@ -1,5 +1,4 @@
 const shopAdminModel = require('../../models/shopAdmin');
-const shopitemModel = require('../../models/shopItem');
 const jwt = require('jsonwebtoken');
 
 async function authitemMiddleware(req,res,next) {
@@ -17,7 +16,7 @@ const token = req.cookies.admintoken;
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
        
-const admin = await shopAdminModel.findOne({ email: decoded.email });
+const admin = await shopAdminModel.findOne({ email: decoded.email }).select("-password");
 
         if (!admin) {
             return res.status(401).json({ message: "Admin not found" });

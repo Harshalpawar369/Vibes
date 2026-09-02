@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState, useContext } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState, useContext } from "react";
+import { AnimatePresence, motion as Motion } from "framer-motion";
 import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, clearCart } from "../../redux/features/cartSlice.js";
 import { deleteOrder, fetchMyOrders } from "../../redux/features/orderSlice.js";
+import SEO from '../components/SEO.jsx';
 
 
 
@@ -15,11 +16,14 @@ import UserContext from "../../context/UserContext";
 
 function Cart() {
   const dispatch = useDispatch();
-  const { cartItems, totalAmount, totalQuantity } = useSelector(
-    (state) => state.cart,
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const orders = useSelector((state) => state.orders.orders);
+  const status = useSelector((state) => state.orders.status);
+  const createOrderStatus = useSelector(
+    (state) => state.payment.createOrderStatus,
   );
-  const { orders, status, createStatus } = useSelector((state) => state.orders);
-  const { createOrderStatus } = useSelector((state) => state.payment);
 
   const { user, isLoggedIn } = useContext(UserContext);
   const [showOrderForm, setShowOrderForm] = useState(false);
@@ -33,7 +37,7 @@ function Cart() {
     }
   }, [dispatch, isLoggedIn, user]);
 
-  const canPlaceOrder = useMemo(() => cartItems.length > 0, [cartItems.length]);
+  const canPlaceOrder = cartItems.length > 0;
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -72,7 +76,7 @@ function Cart() {
 
     const payload = {
       items: cartItems.map((item) => ({
-        items: item._id,
+        item: item._id,
         quantity: item.quantity,
       })),
       address: address.trim(),
@@ -93,7 +97,7 @@ function Cart() {
     const razorpayOrder = paymentResult.payload;
 
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      key: "rzp_test_T4DZLbfCY3WJKG",
 
       amount: razorpayOrder.amount,
 
@@ -145,6 +149,14 @@ function Cart() {
   };
 
   return (
+    <>
+    <SEO
+    title="Vibes | Cart"
+    description="View your selected items in the cart, manage quantities, and proceed to checkout. Ensure a smooth shopping experience with Vibes E-commerce Website."
+    canonical="https://vibes-ecommerce-website.vercel.app//cart"
+    
+    />
+    
     <div className="w-full min-h-screen bg-white text-black font-[poppins]">
       <div className="pt-[18vh] px-6 md:px-12">
         <h1 className="text-3xl font-black mb-6">Your Cart</h1>
@@ -164,7 +176,7 @@ function Cart() {
             ) : (
               <AnimatePresence>
                 {cartItems.map((item) => (
-                  <motion.div
+                  <Motion.div
                     key={item._id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -175,7 +187,8 @@ function Cart() {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full md:w-40 h-40 object-cover border-2 border-black rounded-2xl"
+                      loading="lazy"
+                      className="w-full md:w-40 h-40 object-cover border-2 border-black rounded-2xl background-yellow-300 "
                     />
                     <div className="flex-1">
                       <h2 className="text-xl font-black">{item.name}</h2>
@@ -185,7 +198,7 @@ function Cart() {
                         Total: ${item.totalItemPrice}
                       </p>
                     </div>
-                    <motion.button
+                    <Motion.button
                       whileHover={{
                         x: 4,
                         y: 4,
@@ -203,8 +216,8 @@ function Cart() {
                       className="px-3.5  bg-emerald-400 border-4 border-black font-bold uppercase rounded-2xl"
                     >
                       Remove
-                    </motion.button>
-                  </motion.div>
+                    </Motion.button>
+                  </Motion.div>
                 ))}
               </AnimatePresence>
             )}
@@ -213,9 +226,9 @@ function Cart() {
           <div className="border-4 border-black p-6 h-fit sticky top-[20vh] rounded-2xl">
             <h2 className="text-2xl font-black mb-4">Summary</h2>
             <p className="font-semibold mb-2">Items: {totalQuantity}</p>
-            <p className="font-semibold mb-4">Total: ${totalAmount}</p>
+            <p className="font-semibold mb-4">Total: ₹{totalAmount}</p>
 
-            <motion.button
+            <Motion.button
               whileHover={{
                 x: 4,
                 y: 4,
@@ -230,7 +243,7 @@ function Cart() {
               className="w-full bg-emerald-400 border-4 border-black font-black uppercase py-2 disabled:opacity-60 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               Order Now
-            </motion.button>
+            </Motion.button>
           </div>
         </div>
 
@@ -265,7 +278,7 @@ function Cart() {
                         Delivered: {order.isDelivered ? "Yes" : "No"}
                       </p>
                     </div>
-                    <motion.button
+                    <Motion.button
                       whileHover={{
                         x: 4,
                         y: 4,
@@ -283,7 +296,7 @@ function Cart() {
                       className="px-4 py-2 bg-emerald-400 border-4 border-black font-bold uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     >
                       Cancel Order
-                    </motion.button>
+                    </Motion.button>
                   </div>
                   <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
                     {order.items?.map((line) => (
@@ -307,13 +320,13 @@ function Cart() {
 
       <AnimatePresence>
         {showOrderForm && (
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 "
           >
-            <motion.div
+            <Motion.div
               initial={{ scale: 0.95, y: 10 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 10 }}
@@ -344,7 +357,7 @@ function Cart() {
                   <p className="text-red-600 font-semibold">{formError}</p>
                 )}
                 <div className="flex gap-3">
-                  <motion.button
+                  <Motion.button
                     whileHover={{
                       x: 4,
                       y: 4,
@@ -361,8 +374,8 @@ function Cart() {
                     {createOrderStatus === "loading"
                       ? "Processing..."
                       : `Pay ₹${totalAmount}`}
-                  </motion.button>
-                  <motion.button
+                  </Motion.button>
+                  <Motion.button
                     whileHover={{
                       x: 4,
                       y: 4,
@@ -377,16 +390,17 @@ function Cart() {
                     className="flex-1 bg-white border-4 border-black font-bold py-2 uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                   >
                     Close
-                  </motion.button>
+                  </Motion.button>
                 </div>
               </form>
-            </motion.div>
-          </motion.div>
+            </Motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
 
       <Footer />
     </div>
+    </>
   );
 }
 

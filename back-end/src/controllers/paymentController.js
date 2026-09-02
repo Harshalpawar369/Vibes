@@ -1,4 +1,5 @@
 const path = require('path');
+const crypto = require('crypto');
 const orderModel = require('../../models/orderModel');
 const Payment = require('../../models/paymentModel');
 
@@ -15,9 +16,7 @@ const createRazorpayOrder = async (req, res) => {
     const { amount } = req.body;
 
     if (!amount) {
-      return res.status(400).json({
-        message: "Amount is required",
-      });
+      return res.status(400).json({ message: "Amount is required" });
     }
 
     const options = {
@@ -26,17 +25,14 @@ const createRazorpayOrder = async (req, res) => {
       receipt: `receipt_${Date.now()}`,
     };
 
-    const razorpayOrder =
-      await razorpayInstance.orders.create(options);
+    const razorpayOrder = await razorpayInstance.orders.create(options);
 
     return res.status(200).json({
       success: true,
       order: razorpayOrder,
     });
-
   } catch (error) {
-    console.log(error);
-
+    
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -46,24 +42,12 @@ const createRazorpayOrder = async (req, res) => {
 
 const verifyPayment = async (req, res) => {
   try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, orderData } = req.body;
 
-      orderData,
-    } = req.body;
-
+  
     const generatedSignature = crypto
-      .createHmac(
-        "sha256",
-        process.env.RAZORPAY_KEY_SECRET
-      )
-      .update(
-        razorpay_order_id +
-        "|" +
-        razorpay_payment_id
-      )
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
 
     if (generatedSignature !== razorpay_signature) {
@@ -74,7 +58,7 @@ const verifyPayment = async (req, res) => {
     }
 
     const createdOrder = await orderModel.create({
-      user: req.user._id,
+      user: req.user._id, 
       items: orderData.items,
       address: orderData.address,
       phoneNO: orderData.phoneNO,
@@ -94,10 +78,8 @@ const verifyPayment = async (req, res) => {
       message: "Payment verified",
       order: createdOrder,
     });
-
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -108,4 +90,4 @@ const verifyPayment = async (req, res) => {
 module.exports = {
     createRazorpayOrder,
     verifyPayment,
-}
+};

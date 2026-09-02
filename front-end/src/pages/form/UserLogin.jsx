@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import formvideoBackground from "../../assets/video/formvideoBackground.mp4";
-import "../../utils/stylesheet/formstyle.css";
+import formvideoBackground from "/assets/video/formvideoBackground.mp4";
+
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import view from "../../assets/icons/view.png";
-import hide from "../../assets/icons/hide.png";
+import view from "/assets/icons/view.png";
+import hide from "/assets/icons/hide.png";
 import axiosuserapi from "../../api/axiosuserapi";
 import { useNavigate } from "react-router-dom";
 
@@ -116,7 +116,6 @@ const UserLogin = ({ onAuthSuccess }) => {
 
       alert(errorMessage);
 
-      console.error("Engine Stall:", errorMessage);
 
       gsap.to(".pop", {
         x: 10,

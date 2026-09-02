@@ -43,7 +43,7 @@ const Ai = () => {
         ...prev,
         { id: crypto.randomUUID(), role: "assistant", content: aiResponse },
       ]);
-      console.log("Delulu responce is: ", result.data);
+     
     } catch (err) {
       console.log(err);
       setChat((prev) => [

@@ -1,7 +1,7 @@
 const userModel = require("../../models/user.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const shopAdminModel = require("../../models/shopAdmin.js")
+const shopAdminModel = require("../../models/shopAdmin.js");
 
 async function registerUser(req, res) {
     try {
@@ -14,17 +14,14 @@ async function registerUser(req, res) {
             return res.status(400).json({ message: "Email is required" });
         }
 
-       
         const isuserAlreadyExists = await userModel.findOne({ email: emailMatcher });
         if (isuserAlreadyExists) {
             return res.status(400).json({ message: "User already exist" });
         }
 
-        
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        
         const createdUser = await userModel.create({
             userName,
             email: normalizedEmail,
@@ -32,10 +29,10 @@ async function registerUser(req, res) {
             contactNo,
         });
 
-       
-        const token = jwt.sign({ email: normalizedEmail }, process.env.JWT_SECRET);
+        // 1. Encode userId instead of email
+        const token = jwt.sign({ userId: createdUser._id }, process.env.JWT_SECRET);
 
-        res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax' });
+        res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
         return res.status(201).json({
             message: "user registred successfully",
             user: {
@@ -45,7 +42,6 @@ async function registerUser(req, res) {
             }
         });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
@@ -57,49 +53,39 @@ async function loginUser(req,res) {
     const emailMatcher = new RegExp(`^${escapedEmail}$`, "i");
 
     if (!normalizedEmail || !password) {
-        return res.status(400).json({
-            message: "invalid email or password"
-        })
+        return res.status(400).json({ message: "invalid email or password" });
     }
 
-    const checkUserexist = await userModel.findOne({
-    email: emailMatcher
-})
+    const checkUserexist = await userModel.findOne({ email: emailMatcher });
 
-if(!checkUserexist){
-    return res.status(400).json({
-        message: "invalid email or password"
-    })
-} 
+    if(!checkUserexist){
+        return res.status(400).json({ message: "invalid email or password" });
+    } 
 
-const isPasswordValid = await bcrypt.compare(password, checkUserexist.password);
+    const isPasswordValid = await bcrypt.compare(password, checkUserexist.password);
  
-if(!isPasswordValid){
-    return res.status(400).json({
-        message: "invalid email or password"
-    })
-}
-
-const token = jwt.sign({ email: checkUserexist.email }, process.env.JWT_SECRET);
-
-res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax' });
-
-res.status(200).json({
-    message: "user logged-in succssefully",
-    user: {
-        email: checkUserexist.email,
-        userName: checkUserexist.userName,
-        contactNo: checkUserexist.contactNo
+    if(!isPasswordValid){
+        return res.status(400).json({ message: "invalid email or password" });
     }
-})
-  
+
+    // 2. Encode userId instead of email
+    const token = jwt.sign({ userId: checkUserexist._id }, process.env.JWT_SECRET);
+
+    res.cookie("usertoken", token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
+
+    res.status(200).json({
+        message: "user logged-in succssefully",
+        user: {
+            email: checkUserexist.email,
+            userName: checkUserexist.userName,
+            contactNo: checkUserexist.contactNo
+        }
+    });
 }
 
 function logoutUSer(req,res){
     res.clearCookie("usertoken");
-    res.status(200).json({
-        message: "logged out successfully"
-    })
+    res.status(200).json({ message: "logged out successfully" });
 }
 
 async function shopAdminRegister(req,res) {
@@ -120,10 +106,10 @@ async function shopAdminRegister(req,res) {
             phoneNo
         });
 
-         const token = jwt.sign({ email }, process.env.JWT_SECRET);
+        // 3. Encode adminId instead of email
+        const token = jwt.sign({ adminId: createdOwner._id }, process.env.JWT_SECRET);
 
-       
-        res.cookie("admintoken", token);
+        res.cookie("admintoken", token, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
         return res.status(201).json({
             message: "owner registred successfully",
             user: {
@@ -133,46 +119,53 @@ async function shopAdminRegister(req,res) {
             }
         });
     } catch (error) {
-
-        console.error(error);
         res.status(500).json({ message: "Internal Server Error" });
-        
     }
 }
 
 async function shopAdminLogin(req,res){
-    const {email,password} = req.body;
+    try {
+        const {email,password} = req.body;
+        const normalizedEmail = String(email || "").trim().toLowerCase();
 
-    const owner = await shopAdminModel.findOne({email});
+        const owner = await shopAdminModel.findOne({email: normalizedEmail});
 
-    if(!owner) return res.status(400).json({message: "invalid email or password"})
+        if(!owner) return res.status(400).json({message: "invalid email or password"});
 
-    const ispasswordValid = await bcrypt.compare(password, owner.password)
+        const ispasswordValid = await bcrypt.compare(password, owner.password);
 
-    if(!ispasswordValid){
-        return res.status(400).json({message: "email or password invalid"})
-    }
-
-    const token = jwt.sign({email: owner.email}, process.env.JWT_SECRET);
-
-    res.cookie("admintoken", token);
-
-    res.status(200).json({
-        message: "owner logged in",
-        owner:{
-            email:owner.email,
-            ownerName:owner.ownerName,
-            phoneNo:owner.phoneNo
+        if(!ispasswordValid){
+            return res.status(400).json({message: "email or password invalid"});
         }
-    })
+
+        // 4. Encode adminId instead of email
+        const token = jwt.sign({ adminId: owner._id }, process.env.JWT_SECRET);
+
+        res.cookie("admintoken", token, { 
+            httpOnly: true, 
+            sameSite: 'lax', 
+            secure: process.env.NODE_ENV === 'production' 
+        });
+
+        res.status(200).json({
+            message: "owner logged in",
+            owner:{
+                email: owner.email,
+                ownerName: owner.ownerName,
+                phoneNo: owner.phoneNo
+            }
+        });
+    } catch (error) {
+        console.error("Admin Login Error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 }
 
 function adminlogout(req,res){
     res.clearCookie("admintoken");
-    res.status(200).json({
-        message: "loggout successefully"
-    })
+    res.status(200).json({ message: "loggout successefully" });
 }
+
 async function isLoggedIn(req, res) {
     const token = req.cookies.usertoken;
     if (!token) {
@@ -181,7 +174,8 @@ async function isLoggedIn(req, res) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await userModel.findOne({ email: decoded.email }).select("email userName contactNo");
+        // 5. Look up by _id using the decoded userId
+        const user = await userModel.findById(decoded.userId).select("email userName contactNo");
         if (!user) {
             return res.status(200).json({ loggedIn: false });
         }
@@ -199,4 +193,4 @@ module.exports = {
     shopAdminLogin,
     adminlogout,
     isLoggedIn
- };
+};
