@@ -13,7 +13,7 @@ async function authRoleMiddleware(req, res, next) {
   if (adminToken) {
     try {
       const decoded = jwt.verify(adminToken, process.env.JWT_SECRET);
-      const admin = await shopAdminModel.findOne({ email: decoded.email }).select("-password");
+      const admin = await shopAdminModel.findById(decoded.adminId).select("-password");
       if (admin) {
         req.user = admin;
         req.role = "admin";
@@ -27,7 +27,7 @@ async function authRoleMiddleware(req, res, next) {
   if (userToken) {
     try {
       const decoded = jwt.verify(userToken, process.env.JWT_SECRET);
-      const user = await userModel.findOne({ email: decoded.email }).select("-password");
+      const user = await userModel.findById(decoded.userId).select("-password");
       if (user) {
         req.user = user;
         req.role = "user";

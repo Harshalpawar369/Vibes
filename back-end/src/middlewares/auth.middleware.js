@@ -1,22 +1,20 @@
 const shopAdminModel = require('../../models/shopAdmin');
 const jwt = require('jsonwebtoken');
 
-async function authitemMiddleware(req,res,next) {
+async function authitemMiddleware(req, res, next) {
+    const token = req.cookies.admintoken; 
 
-    
-const token = req.cookies.admintoken; 
-
-    if(!token){
-      return res.status(401).json({
+    if (!token) {
+        return res.status(401).json({
             message: "please login first"
-        })
+        });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-       
-const admin = await shopAdminModel.findOne({ email: decoded.email }).select("-password");
+
+        const admin = await shopAdminModel.findById(decoded.adminId).select("-password");
 
         if (!admin) {
             return res.status(401).json({ message: "Admin not found" });
@@ -29,10 +27,10 @@ const admin = await shopAdminModel.findOne({ email: decoded.email }).select("-pa
     } catch (error) {
         res.status(401).json({
             message: "invalid token"
-        })
+        });
     }    
 }
 
 module.exports = {
     authitemMiddleware
-}
+};

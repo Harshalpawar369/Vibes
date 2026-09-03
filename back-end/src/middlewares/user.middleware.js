@@ -11,7 +11,8 @@ async function authRoleMiddleware(req, res, next) {
     try {
         const decoded = jwt.verify(userToken, process.env.JWT_SECRET);
         
-        const user = await userModel.findOne({ email: decoded.email }).select("-password");
+    
+        const user = await userModel.findById(decoded.userId).select("-password");
         
         if (!user) {
             return res.status(404).json({ message: "Invalid Account" });
